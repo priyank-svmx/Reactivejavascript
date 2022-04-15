@@ -41,3 +41,18 @@ mouseMoves.forEach({
  * from event to observable
  */
 var mouseMoves = Observable.fromEvent(element, 'mousemove');
+
+const Observable = {};
+Observable.fromEvent = function (dom, eventname) {
+  return {
+    forEach: function (observer) {
+      const handler = e => observer.onNext(e);
+      dom.addEventListener(eventname, handler);
+      return {
+        dispose: function () {
+          dom.removeEventListner(eventname, handler);
+        }
+      };
+    }
+  };
+};
